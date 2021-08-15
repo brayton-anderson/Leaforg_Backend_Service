@@ -1,0 +1,21 @@
+php:
+  repository: "andie2120/leaforg-app-backend-api"
+  tag: "v1.0.8"
+  fpmEnabled: false
+  envVars:
+    - name: APP_ENV
+      value: production
+    - name: APP_DEBUG
+      value: false
+    - name: DB_PORT
+      value: 3306
+    - name: DB_HOST
+      value: localhost
+...
+# Use Ingress Controller
+service:
+  type: ClusterIP
+  HTTPPort: 80
+ingress:
+  enabled: true
+  domain: backend.leaforg.com

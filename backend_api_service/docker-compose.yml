@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+  php:
+    image: andie2120/leaforg-app-backend-api:v1.0.8
+    restart: always
+    ports:
+      - 8000:80
+    environment:
+      - APP_NAME='Leaforg App'
+      - APP_KEY=base64:anrRZKbT+btJwSXY/s8Xt0Y73EUUtlxCzHAMwPEskKQ=
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_LOG_LEVEL=production
+      - DB_PORT=3306
+      - DB_HOST=mysql
+      - DB_DATABASE
+      - DB_USERNAME
+      - DB_PASSWORD
+
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST=smtp.mailtrap.io
+      - MAIL_PORT=465
+      - MAIL_USERNAME=info@soqo.co.ke
+      - MAIL_PASSWORD=WF=b2MVg6^Wv
+      - MAIL_ENCRYPTION=TLS
+
+      - PUSHER_APP_ID=
+      - PUSHER_APP_KEY=
+      - PUSHER_APP_SECRET=
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    #command: mysqld --user=root
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/my.cnf
+      #- ./mysql-dump:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci 
+      --default-authentication-plugin=mysql_native_password
+      --init-file /docker-entrypoint-initdb.d/init.sql

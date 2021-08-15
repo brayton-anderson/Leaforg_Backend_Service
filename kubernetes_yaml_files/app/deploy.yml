@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: leaforg-service
+data:
+  APP_DEBUG: "false"
+  APP_ENV: production
+  APP_KEY: base64:anrRZKbT+btJwSXY/s8Xt0Y73EUUtlxCzHAMwPEskKQ=
+  APP_LOG_LEVEL: debug
+  APP_NAME: "Leaforg App"
+  APP_URL: https://leaforg.com
+  DB_CONNECTION: mysql
+  DB_DATABASE: leaforgapi
+  DB_HOST: mysql
+  DB_PASSWORD: LeAfOrGapI_2120@leaf
+  DB_PORT: "3306"
+  DB_USERNAME: leafrootAPI2120
+  BROADCAST_DRIVER: log
+  CACHE_DRIVER: file
+  QUEUE_DRIVER: sync
+  SESSION_DRIVER: file
+  REDIS_HOST: leaforg-redis
+  REDIS_PORT: "6379"
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: leaforg-backend-api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: leaforg-app
+  template:
+    metadata:
+      labels:
+        k8s-app: leaforg-app
+    spec:
+      containers:
+      - name: leaforg-app
+        image: icr.io/leaforg/leaforg-app-backend-api:v1.0.8
+        env:
+            - name: APP_DEBUG
+              value: 'false'
+            - name: APP_ENV
+              value: production
+            - name: APP_KEY
+              value: base64:anrRZKbT+btJwSXY/s8Xt0Y73EUUtlxCzHAMwPEskKQ=
+            - name: APP_LOG_LEVEL
+              value: debug
+            - name: APP_NAME
+              value: '"Leaforg App"'
+            - name: DB_CONNECTION
+              value: mysql
+            - name: DB_DATABASE
+              value: leaforgapi
+            - name: DB_HOST
+              value: mysql
+            - name: DB_PASSWORD
+              value: LeAfOrGapI_2120@leaf
+            - name: DB_PORT
+              value: '3306'
+            - name: DB_USERNAME
+              value: leafrootAPI2120
+        imagePullPolicy: "Always"
+        envFrom:
+          - configMapRef:
+             name: leaforg-service
+        volumeMounts:
+        - name: app-secret
+          mountPath: "/var/www/html/secret"
+          readOnly: true
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        - name: https
+          containerPort: 443
+          protocol: TCP
+      volumes:
+      - name: app-secret
+        secret:
+          secretName: leaforg-app-secret
+      - name: leaforg-service
+        configMap: 
+          name: leaforg-service
+      imagePullSecrets:
+      - name: leaforg-secretss
