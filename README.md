@@ -63,8 +63,8 @@ Participation is welcomed from software developers, designers, testers, disposal
 Key areas the team are interested in developing include localizing the mobile app, improving the backend api service, updating project documentation, software, more in-depth research, and adding products data to the database.
 
 
-## Leaforg front-end 
-[Leaforg Front-end  Code 2021](https://github.com/brayton-anderson/Leaforg_Backend_Service/)
+## Leaforg front-end (Flutter <Dart>)
+[Leaforg Front-end  Code 2021](https://github.com/brayton-anderson/Leaforg-app/)
 
 ## Access our platform
 [Access Leaforg Frontend](http://14b5af1d-eu-de.lb.appdomain.cloud/)
